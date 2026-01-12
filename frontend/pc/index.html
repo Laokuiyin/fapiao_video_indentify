@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发票识别系统 - PC端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .summary {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .summary-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #007AFF;
+        }
+        .summary-value.amount {
+            color: #34C759;
+        }
+        .qr-code {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .qr-code h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .qr-code img {
+            width: 200px;
+            height: 200px;
+        }
+        .qr-code p {
+            margin-top: 15px;
+            color: #666;
+        }
+        .invoice-list {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .list-header h2 {
+            color: #333;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .btn-danger {
+            background: #FF3B30;
+            color: white;
+        }
+        .btn-primary {
+            background: #007AFF;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f9f9f9;
+            color: #666;
+            font-weight: 500;
+        }
+        tr:hover {
+            background: #f9f9f9;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+        }
+        .btn-delete {
+            background: #FF3B30;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .connection-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .connected {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .disconnected {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        @media (max-width: 768px) {
+            .summary {
+                grid-template-columns: 1fr;
+            }
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>📄 发票识别系统</h1>
+                <span class="connection-status" id="connectionStatus">⚫ 未连接</span>
+            </div>
+            <div>
+                <button class="btn btn-primary" onclick="window.open('/mobile', '_blank')">
+                    📱 打开手机采集页面
+                </button>
+            </div>
+        </header>
+
+        <div class="summary">
+            <div class="summary-item">
+                <div class="summary-label">发票总数</div>
+                <div class="summary-value" id="totalCount">0</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">价税合计</div>
+                <div class="summary-value amount" id="totalAmount">¥0.00</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">今日识别</div>
+                <div class="summary-value" id="todayCount">0</div>
+            </div>
+        </div>
+
+        <div class="qr-code">
+            <h3>📱 手机扫描访问</h3>
+            <div id="qrcode"></div>
+            <p>使用手机浏览器扫描二维码，或访问: <strong id="serverUrl">http://localhost:8000/mobile</strong></p>
+        </div>
+
+        <div class="invoice-list">
+            <div class="list-header">
+                <h2>发票明细</h2>
+                <button class="btn btn-danger" onclick="clearAll()">🗑️ 清空全部</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>发票号码</th>
+                        <th>开票日期</th>
+                        <th>价税合计</th>
+                        <th>识别时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceTableBody">
+                </tbody>
+            </table>
+            <div class="empty-state" id="emptyState">
+                暂无发票数据，请使用手机扫描识别
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        const API_BASE = window.location.origin;
+        const WS_URL = `ws://${window.location.host}/ws`;
+
+        let ws = null;
+        let invoices = [];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadInvoices();
+            initWebSocket();
+            generateQRCode();
+        });
+
+        // 生成二维码
+        function generateQRCode() {
+            const mobileUrl = `${window.location.origin}/mobile`;
+            document.getElementById('serverUrl').textContent = mobileUrl;
+            QRCode.toCanvas(document.createElement('canvas'), mobileUrl, { width: 200 }, (error, canvas) => {
+                if (!error) {
+                    document.getElementById('qrcode').appendChild(canvas);
+                }
+            });
+        }
+
+        // 加载发票数据
+        async function loadInvoices() {
+            try {
+                const response = await fetch(`${API_BASE}/api/invoices`);
+                const data = await response.json();
+                invoices = data.invoices;
+                updateUI(data);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+            }
+        }
+
+        // 更新界面
+        function updateUI(data) {
+            // 更新汇总
+            document.getElementById('totalCount').textContent = data.total_count;
+            document.getElementById('totalAmount').textContent = '¥' + data.total_amount.toFixed(2);
+
+            // 今日识别数量
+            const today = new Date().toDateString();
+            const todayCount = data.invoices.filter(inv => {
+                const invDate = new Date(inv.created_at).toDateString();
+                return invDate === today;
+            }).length;
+            document.getElementById('todayCount').textContent = todayCount;
+
+            // 更新表格
+            const tbody = document.getElementById('invoiceTableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (data.invoices.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                tbody.innerHTML = data.invoices.map((inv, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><code>${inv.invoice_number}</code></td>
+                        <td>${formatDate(inv.invoice_date)}</td>
+                        <td><strong>¥${inv.total_amount.toFixed(2)}</strong></td>
+                        <td>${formatDateTime(inv.created_at)}</td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteInvoice('${inv.id}')">删除</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // 删除发票
+        async function deleteInvoice(id) {
+            if (!confirm('确定要删除这张发票吗？')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/invoices/${id}`, { method: 'DELETE' });
+                await loadInvoices();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        // 清空全部
+        async function clearAll() {
+            if (!confirm('确定要清空所有发票吗？此操作不可恢复！')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/invoices`, { method: 'DELETE' });
+                await loadInvoices();
+            } catch (error) {
+                alert('清空失败');
+            }
+        }
+
+        // WebSocket连接
+        function initWebSocket() {
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                updateConnectionStatus(true);
+                console.log('WebSocket已连接');
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'update') {
+                    updateUI(data.data);
+                }
+            };
+
+            ws.onclose = () => {
+                updateConnectionStatus(false);
+                console.log('WebSocket已断开，5秒后重连...');
+                setTimeout(initWebSocket, 5000);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket错误:', error);
+            };
+        }
+
+        function updateConnectionStatus(connected) {
+            const status = document.getElementById('connectionStatus');
+            if (connected) {
+                status.textContent = '🟢 已连接';
+                status.className = 'connection-status connected';
+            } else {
+                status.textContent = '🔴 未连接';
+                status.className = 'connection-status disconnected';
+            }
+        }
+
+        // 日期格式化
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr.length !== 8) return dateStr || '-';
+            return `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}-${dateStr.substring(6,8)}`;
+        }
+
+        function formatDateTime(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+    </script>
+</body>
+</html>
