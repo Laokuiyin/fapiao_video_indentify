@@ -12,13 +12,25 @@ dist/
 build/
 
 # Database
-data/*.db
-data/*.db-journal
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL Certificates (敏感文件)
+*.pem
+*.crt
+*.key
+cert.pem
+key.pem
 
 # Logs
 *.log
 server.log
 nohup.out
+
+# Sample files
+invoice_sample/
 
 # IDE
 .vscode/

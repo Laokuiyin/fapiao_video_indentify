@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 发票识别系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>发票识别系统</h1>
+            <p>Invoice Recognition System</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="请输入用户名"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="请输入密码"
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">登录</button>
+
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // 检查是否已登录
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.href = '/';
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // 禁用按钮
+            loginBtn.disabled = true;
+            loginBtn.textContent = '登录中...';
+            errorMessage.classList.remove('show');
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // 保存 token
+                    localStorage.setItem('token', data.access_token);
+                    // 跳转到首页
+                    window.location.href = '/';
+                } else {
+                    // 显示错误
+                    errorMessage.textContent = data.detail || '登录失败';
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                errorMessage.textContent = '网络错误，请重试';
+                errorMessage.classList.add('show');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = '登录';
+            }
+        });
+    </script>
+</body>
+</html>

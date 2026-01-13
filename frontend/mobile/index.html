@@ -14,56 +14,220 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: #f5f5f5;
         }
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            font-size: 18px;
+            color: #333;
+        }
+        .settings-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 24px;
-        }
-        .upload-area {
+        /* 报销单信息卡片 */
+        .report-card {
             background: white;
             border-radius: 12px;
-            padding: 30px;
-            text-align: center;
+            padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
-        .camera-btn {
+        .report-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .report-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .report-info-item {
+            flex: 1;
+            min-width: 45%;
+        }
+        .report-info-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        .report-info-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .report-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #007AFF;
+            color: white;
+        }
+        .btn-success {
+            background: #34C759;
+            color: white;
+        }
+        .btn-gray {
+            background: #E0E0E0;
+            color: #666;
+        }
+        .no-report {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+        }
+        .no-report button {
+            margin-top: 15px;
+            padding: 12px 30px;
             background: #007AFF;
             color: white;
             border: none;
-            padding: 15px 30px;
             border-radius: 25px;
             font-size: 16px;
             cursor: pointer;
-            width: 100%;
-            margin-bottom: 10px;
         }
-        .gallery-btn {
-            background: #34C759;
+        /* 发票列表 */
+        .invoice-list {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .invoice-list h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+        }
+        .invoice-count {
+            font-size: 14px;
+            color: #007AFF;
+        }
+        .invoice-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .invoice-item:last-child {
+            border-bottom: none;
+        }
+        .invoice-number {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #666;
+        }
+        .invoice-amount {
+            color: #34C759;
+            font-weight: 500;
+        }
+        .empty-invoices {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+        /* 扫描区域 */
+        .scan-area {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .scan-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        #reader {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #reader video {
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .scan-hint {
+            text-align: center;
+            color: #666;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .scan-toggle {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .scan-toggle button {
+            background: #007AFF;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 30px;
             border-radius: 25px;
             font-size: 16px;
             cursor: pointer;
-            width: 100%;
         }
-        #fileInput, #cameraInput {
-            display: none;
+        .scan-toggle button.scanning {
+            background: #FF3B30;
         }
-        .preview {
-            margin-top: 20px;
-            display: none;
+        .scan-toggle button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
-        .preview img {
-            max-width: 100%;
+        .alternative-option {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .alternative-option a {
+            color: #007AFF;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .https-warning {
+            background: #FFF3E0;
+            border: 1px solid #FFB74D;
+            color: #E65100;
+            padding: 12px;
             border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.5;
         }
         .result {
             background: white;
@@ -118,24 +282,108 @@
             margin-top: 15px;
             text-align: center;
         }
+        /* 对话框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            min-width: 300px;
+            max-width: 90%;
+        }
+        .modal h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>📷 发票采集</h1>
+        <button class="settings-btn" onclick="showSettingsDialog()">⚙️</button>
+    </div>
 
-        <div class="upload-area">
-            <button class="camera-btn" onclick="document.getElementById('cameraInput').click()">
-                📸 拍摄发票
-            </button>
-            <button class="gallery-btn" onclick="document.getElementById('fileInput').click()">
-                🖼️ 从相册选择
-            </button>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment">
-            <input type="file" id="fileInput" accept="image/*">
+    <div class="container">
+        <!-- 报销单信息 -->
+        <div class="report-card" id="reportCard">
+            <h3>📋 当前报销单</h3>
+            <div id="reportInfo">
+                <div class="no-report">
+                    <p>暂无报销单</p>
+                    <button onclick="showCreateReportModal()">+ 创建报销单</button>
+                </div>
+            </div>
         </div>
 
-        <div class="preview" id="preview"></div>
+        <!-- 发票列表 -->
+        <div class="invoice-list" id="invoiceListCard" style="display: none;">
+            <h3>
+                <span>已扫描发票</span>
+                <span class="invoice-count" id="invoiceCount">0 张</span>
+            </h3>
+            <div id="invoiceList">
+                <div class="empty-invoices">暂无发票</div>
+            </div>
+        </div>
+
+        <!-- 扫描区域 -->
+        <div class="scan-area">
+            <div class="scan-container">
+                <div id="reader"></div>
+            </div>
+            <div class="scan-hint">将发票二维码放入框内即可自动扫描</div>
+            <div class="scan-toggle">
+                <button id="scanToggleBtn" onclick="toggleScan()" disabled>📱 开始扫描</button>
+            </div>
+            <div class="alternative-option">
+                <a href="#" onclick="document.getElementById('qrImageInput').click()">🖼️ 或从相册选择二维码图片</a>
+                <input type="file" id="qrImageInput" accept="image/*" style="display: none;" onchange="handleQRImage(event)">
+            </div>
+            <div id="httpsWarning" class="https-warning" style="display: none;">
+                ⚠️ <strong>注意：</strong> 浏览器要求使用 HTTPS 协议才能访问摄像头。<br>
+                请使用 HTTPS 访问，或从相册上传二维码图片。
+            </div>
+        </div>
 
         <div class="loading" id="loading"></div>
 
@@ -156,41 +404,438 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
         const API_BASE = window.location.origin;
-        const fileInput = document.getElementById('fileInput');
-        const cameraInput = document.getElementById('cameraInput');
-        const preview = document.getElementById('preview');
         const loading = document.getElementById('loading');
         const result = document.getElementById('result');
+        let html5QrcodeScanner = null;
+        let isScanning = false;
+        let currentReport = null;
+        let currentReportInvoices = [];
 
-        function handleFile(file) {
-            if (!file) return;
-
-            // 显示预览
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                preview.innerHTML = `<img src="${e.target.result}" alt="预览">`;
-                preview.style.display = 'block';
-
-                // 上传识别
-                recognizeInvoice(file);
-            };
-            reader.readAsDataURL(file);
+        // 获取认证头
+        function getAuthHeaders() {
+            const token = localStorage.getItem('token');
+            return token ? { 'Authorization': `Bearer ${token}` } : {};
         }
 
-        async function recognizeInvoice(file) {
-            const formData = new FormData();
-            formData.append('file', file);
+        // 检查登录状态
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return false;
+            }
+            return true;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkAuth()) return;
+            checkHTTPS();
+            // 尝试加载当前报销单
+            loadCurrentReport();
+        });
+
+        // 检查HTTPS
+        function checkHTTPS() {
+            const isHTTPS = window.location.protocol === 'https:';
+            const isLocalhost = window.location.hostname === 'localhost' ||
+                               window.location.hostname === '127.0.0.1';
+
+            if (!isHTTPS && !isLocalhost) {
+                document.getElementById('httpsWarning').style.display = 'block';
+            }
+        }
+
+        // 加载当前报销单（从localStorage获取）
+        function loadCurrentReport() {
+            const reportId = localStorage.getItem('currentReportId');
+            if (reportId) {
+                loadReportDetail(reportId);
+            } else {
+                showNoReport();
+            }
+        }
+
+        // 加载报销单详情
+        async function loadReportDetail(reportId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports/${reportId}`, {
+                    headers: getAuthHeaders()
+                });
+                const result = await response.json();
+
+                if (result.success && result.data.report.status === 'draft') {
+                    currentReport = result.data.report;
+                    currentReportInvoices = result.data.invoices || [];
+                    showReportInfo();
+                    loadReportInvoices();
+                    enableScan();
+                } else {
+                    // 报销单不存在或已提交，清除本地存储
+                    localStorage.removeItem('currentReportId');
+                    showNoReport();
+                }
+            } catch (error) {
+                console.error('加载报销单失败:', error);
+                showNoReport();
+            }
+        }
+
+        // 显示报销单信息
+        function showReportInfo() {
+            const reportInfo = document.getElementById('reportInfo');
+            reportInfo.innerHTML = `
+                <div class="report-info">
+                    <div class="report-info-item">
+                        <div class="report-info-label">报销单号</div>
+                        <div class="report-info-value">${currentReport.report_number}</div>
+                    </div>
+                    <div class="report-info-item">
+                        <div class="report-info-label">部门</div>
+                        <div class="report-info-value">${currentReport.department_name || currentReport.department_code}</div>
+                    </div>
+                    <div class="report-info-item">
+                        <div class="report-info-label">人员</div>
+                        <div class="report-info-value">${currentReport.employee_name || currentReport.employee_code}</div>
+                    </div>
+                    <div class="report-info-item">
+                        <div class="report-info-label">报销事由</div>
+                        <div class="report-info-value">${currentReport.reason}</div>
+                    </div>
+                    <div class="report-info-item">
+                        <div class="report-info-label">发票数量</div>
+                        <div class="report-info-value" id="reportInvoiceCount">${currentReport.invoice_count}</div>
+                    </div>
+                    <div class="report-info-item">
+                        <div class="report-info-label">总金额</div>
+                        <div class="report-info-value invoice-amount">¥${currentReport.total_amount.toFixed(2)}</div>
+                    </div>
+                </div>
+                <div class="report-actions">
+                    <button class="btn-gray" onclick="changeReport()">切换报销单</button>
+                    <button class="btn-success" onclick="submitReport()">提交报销单</button>
+                </div>
+            `;
+        }
+
+        // 显示无报销单状态
+        function showNoReport() {
+            currentReport = null;
+            currentReportInvoices = [];
+            const reportInfo = document.getElementById('reportInfo');
+            reportInfo.innerHTML = `
+                <div class="no-report">
+                    <p>暂无报销单</p>
+                    <button onclick="showCreateReportModal()">+ 创建报销单</button>
+                </div>
+            `;
+            document.getElementById('invoiceListCard').style.display = 'none';
+            disableScan();
+        }
+
+        // 启用扫描
+        function enableScan() {
+            document.getElementById('scanToggleBtn').disabled = false;
+            document.getElementById('invoiceListCard').style.display = 'block';
+        }
+
+        // 禁用扫描
+        function disableScan() {
+            document.getElementById('scanToggleBtn').disabled = true;
+            if (isScanning) {
+                stopScan();
+            }
+        }
+
+        // 显示创建报销单对话框
+        function showCreateReportModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal">
+                    <h2>创建报销单</h2>
+                    <div class="form-group">
+                        <label>报销单号</label>
+                        <input type="text" id="newReportNumber" placeholder="例如: BX20250113001">
+                    </div>
+                    <div class="form-group">
+                        <label>部门</label>
+                        <select id="newReportDept">
+                            <option value="">请选择部门</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>人员</label>
+                        <select id="newReportEmp">
+                            <option value="">请选择人员</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>报销事由</label>
+                        <input type="text" id="newReportReason" placeholder="例如: 差旅费报销">
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="btn-gray" onclick="this.closest('.modal-overlay').remove()">取消</button>
+                        <button class="btn-primary" onclick="createReport()">创建</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // 加载部门和人员数据
+            loadDepartmentsAndEmployees();
+        }
+
+        // 加载部门和人员
+        async function loadDepartmentsAndEmployees() {
+            try {
+                const [deptRes, empRes] = await Promise.all([
+                    fetch(`${API_BASE}/api/departments`, { headers: getAuthHeaders() }),
+                    fetch(`${API_BASE}/api/employees`, { headers: getAuthHeaders() })
+                ]);
+
+                const depts = (await deptRes.json()).data || [];
+                const emps = (await empRes.json()).data || [];
+
+                const deptSelect = document.getElementById('newReportDept');
+                const empSelect = document.getElementById('newReportEmp');
+
+                deptSelect.innerHTML = '<option value="">请选择部门</option>' +
+                    depts.map(d => `<option value="${d.code}">${d.name} (${d.code})</option>`).join('');
+                empSelect.innerHTML = '<option value="">请选择人员</option>' +
+                    emps.map(e => `<option value="${e.code}">${e.name} (${e.code})</option>`).join('');
+            } catch (error) {
+                console.error('加载数据失败:', error);
+            }
+        }
+
+        // 创建报销单
+        async function createReport() {
+            const reportNumber = document.getElementById('newReportNumber').value;
+            const departmentCode = document.getElementById('newReportDept').value;
+            const employeeCode = document.getElementById('newReportEmp').value;
+            const reason = document.getElementById('newReportReason').value;
+
+            if (!reportNumber || !departmentCode || !employeeCode || !reason) {
+                alert('请填写所有字段');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({
+                        report_number: reportNumber,
+                        department_code: departmentCode,
+                        employee_code: employeeCode,
+                        reason: reason
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    // 保存到本地并加载
+                    localStorage.setItem('currentReportId', result.data.id);
+                    loadReportDetail(result.data.id);
+                    document.querySelector('.modal-overlay').remove();
+                } else {
+                    alert(result.message || '创建失败');
+                }
+            } catch (error) {
+                alert('创建失败');
+            }
+        }
+
+        // 切换报销单
+        function changeReport() {
+            if (confirm('切换报销单将清除当前报销单的选择，确定继续？')) {
+                localStorage.removeItem('currentReportId');
+                showNoReport();
+            }
+        }
+
+        // 加载报销单的发票列表
+        function loadReportInvoices() {
+            const invoiceList = document.getElementById('invoiceList');
+            const invoiceCount = document.getElementById('invoiceCount');
+
+            if (currentReportInvoices.length === 0) {
+                invoiceList.innerHTML = '<div class="empty-invoices">暂无发票</div>';
+                invoiceCount.textContent = '0 张';
+            } else {
+                invoiceList.innerHTML = currentReportInvoices.map(inv => `
+                    <div class="invoice-item">
+                        <div class="invoice-number">${inv.invoice_number}</div>
+                        <div class="invoice-details">
+                            <span>${formatDate(inv.invoice_date)}</span>
+                            <span class="invoice-amount">¥${inv.total_amount.toFixed(2)}</span>
+                        </div>
+                    </div>
+                `).join('');
+                invoiceCount.textContent = `${currentReportInvoices.length} 张`;
+            }
+        }
+
+        // 提交报销单
+        async function submitReport() {
+            if (!currentReport) return;
+
+            if (currentReportInvoices.length === 0) {
+                alert('报销单还没有发票，请先扫描发票');
+                return;
+            }
+
+            if (!confirm('确定要提交此报销单吗？提交后将无法修改。')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports/${currentReport.id}/submit`, {
+                    method: 'POST',
+                    headers: getAuthHeaders()
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('报销单提交成功');
+                    localStorage.removeItem('currentReportId');
+                    showNoReport();
+                } else {
+                    alert(result.message || '提交失败');
+                }
+            } catch (error) {
+                alert('提交失败');
+            }
+        }
+
+        // 切换扫码状态
+        function toggleScan() {
+            if (isScanning) {
+                stopScan();
+            } else {
+                startScan();
+            }
+        }
+
+        // 开始扫码
+        function startScan() {
+            const scanBtn = document.getElementById('scanToggleBtn');
+
+            html5QrcodeScanner = new Html5Qrcode("reader");
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1.0
+            };
+
+            const cameraConfig = [
+                { facingMode: "environment" },
+                { facingMode: { exact: "environment" } },
+                undefined
+            ];
+
+            let attemptIndex = 0;
+
+            function tryStartCamera() {
+                if (attemptIndex >= cameraConfig.length) {
+                    showMessage('无法访问摄像头，请从相册选择二维码图片', 'error');
+                    return;
+                }
+
+                html5QrcodeScanner.start(
+                    cameraConfig[attemptIndex],
+                    config,
+                    async (decodedText, decodedResult) => {
+                        await processQRCodeData(decodedText);
+                    },
+                    (errorMessage) => {
+                        // 静默忽略
+                    }
+                ).then(() => {
+                    isScanning = true;
+                    scanBtn.textContent = '⏹️ 停止扫描';
+                    scanBtn.classList.add('scanning');
+                }).catch((err) => {
+                    console.warn(`摄像头配置 ${attemptIndex + 1} 失败:`, err);
+                    attemptIndex++;
+                    tryStartCamera();
+                });
+            }
+
+            tryStartCamera();
+        }
+
+        // 处理二维码图片上传
+        async function handleQRImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
             loading.style.display = 'block';
             result.style.display = 'none';
 
             try {
-                const response = await fetch(`${API_BASE}/api/recognize`, {
-                    method: 'POST',
-                    body: formData
+                const html5QrCode = new Html5Qrcode("reader");
+                const qrData = await html5QrCode.scanFile(file, true);
+
+                if (qrData) {
+                    await processQRCodeData(qrData);
+                } else {
+                    showMessage('未检测到二维码，请重新选择图片', 'error');
+                    loading.style.display = 'none';
+                }
+            } catch (err) {
+                console.error('图片二维码识别失败:', err);
+                showMessage('未能识别二维码，请确保图片清晰', 'error');
+                loading.style.display = 'none';
+            }
+
+            event.target.value = '';
+        }
+
+        // 停止扫码
+        function stopScan() {
+            const scanBtn = document.getElementById('scanToggleBtn');
+
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().then(() => {
+                    isScanning = false;
+                    scanBtn.textContent = '📱 开始扫描';
+                    scanBtn.classList.remove('scanning');
+                }).catch((err) => {
+                    console.error('停止扫码失败:', err);
                 });
+            }
+        }
+
+        // 处理二维码数据
+        async function processQRCodeData(qrData) {
+            stopScan();
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/recognize-qrcode`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({
+                        qr_data: qrData,
+                        report_id: currentReport ? currentReport.id : null
+                    })
+                });
+
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
 
                 const data = await response.json();
 
@@ -202,16 +847,87 @@
                     document.getElementById('totalAmount').textContent = '¥' + data.data.total_amount.toFixed(2);
                     result.style.display = 'block';
 
-                    // 显示成功提示
                     showMessage('识别成功！', 'success');
+
+                    // 刷新报销单数据
+                    if (currentReport) {
+                        await loadReportDetail(currentReport.id);
+                    }
                 } else {
                     showMessage(data.message || '识别失败，请重试', 'error');
+                    setTimeout(() => startScan(), 2000);
                 }
             } catch (error) {
                 loading.style.display = 'none';
                 showMessage('网络错误，请检查连接', 'error');
                 console.error(error);
+                setTimeout(() => startScan(), 2000);
             }
+        }
+
+        // 显示设置对话框
+        function showSettingsDialog() {
+            const dialog = document.createElement('div');
+            dialog.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;';
+            dialog.innerHTML = `
+                <div style="background:white;padding:25px;border-radius:12px;min-width:300px;max-width:90%;">
+                    <h2 style="margin-bottom:20px;">设置</h2>
+                    <div style="margin-bottom:20px;">
+                        <label style="display:block;margin-bottom:5px;font-size:14px;">修改密码</label>
+                        <input type="password" id="oldPassword" placeholder="旧密码" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;">
+                        <input type="password" id="newPassword" placeholder="新密码" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;">
+                        <input type="password" id="confirmPassword" placeholder="确认新密码" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;">
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn-primary" id="savePasswordBtn" style="margin:0;">保存</button>
+                        <button class="btn-gray" id="cancelBtn" style="margin:0;">取消</button>
+                    </div>
+                    <button class="btn-primary" id="logoutBtn" style="margin-top:15px;background:#FF3B30;">退出登录</button>
+                </div>
+            `;
+            document.body.appendChild(dialog);
+
+            document.getElementById('savePasswordBtn').onclick = async () => {
+                const oldPassword = document.getElementById('oldPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (newPassword !== confirmPassword) {
+                    alert('两次输入的密码不一致');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE}/api/auth/change-password`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...getAuthHeaders()
+                        },
+                        body: JSON.stringify({ old_password: oldPassword, new_password: newPassword })
+                    });
+
+                    if (response.ok) {
+                        alert('密码修改成功');
+                        dialog.remove();
+                    } else {
+                        const data = await response.json();
+                        alert(data.detail || '密码修改失败');
+                    }
+                } catch (error) {
+                    alert('网络错误');
+                }
+            };
+
+            document.getElementById('cancelBtn').onclick = () => {
+                dialog.remove();
+            };
+
+            document.getElementById('logoutBtn').onclick = () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('currentReportId');
+                window.location.href = '/login';
+            };
         }
 
         function formatDate(dateStr) {
@@ -229,9 +945,6 @@
             document.querySelector('.container').appendChild(div);
             setTimeout(() => div.remove(), 3000);
         }
-
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
-        cameraInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
     </script>
 </body>
 </html>

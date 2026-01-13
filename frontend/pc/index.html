@@ -16,7 +16,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         header {
@@ -32,66 +32,38 @@
         h1 {
             color: #333;
         }
-        .summary {
+        /* 导航栏 */
+        .nav-tabs {
             background: white;
-            padding: 30px;
+            padding: 15px 30px;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        .summary-item {
-            text-align: center;
-        }
-        .summary-label {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .summary-value {
-            font-size: 36px;
-            font-weight: bold;
-            color: #007AFF;
-        }
-        .summary-value.amount {
-            color: #34C759;
-        }
-        .qr-code {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .qr-code h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-        .qr-code img {
-            width: 200px;
-            height: 200px;
-        }
-        .qr-code p {
-            margin-top: 15px;
-            color: #666;
-        }
-        .invoice-list {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .list-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            gap: 10px;
         }
-        .list-header h2 {
-            color: #333;
+        .nav-tab {
+            padding: 10px 25px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .nav-tab:hover {
+            background: #f0f0f0;
+        }
+        .nav-tab.active {
+            background: #007AFF;
+            color: white;
+        }
+        /* 页面容器 */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
         }
         .btn {
             padding: 10px 20px;
@@ -108,6 +80,14 @@
         .btn-primary {
             background: #007AFF;
             color: white;
+        }
+        .btn-success {
+            background: #34C759;
+            color: white;
+        }
+        .btn-gray {
+            background: #E0E0E0;
+            color: #666;
         }
         table {
             width: 100%;
@@ -131,14 +111,42 @@
             padding: 60px;
             color: #999;
         }
-        .btn-delete {
-            background: #FF3B30;
-            color: white;
-            border: none;
-            padding: 5px 10px;
+        .invoice-list, .report-list, .settings-panel, .scan-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .list-header h2 {
+            color: #333;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .filter-group label {
+            font-size: 14px;
+            color: #666;
+        }
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
         }
         .connection-status {
             padding: 5px 15px;
@@ -153,15 +161,209 @@
             background: #FFEBEE;
             color: #C62828;
         }
-        @media (max-width: 768px) {
-            .summary {
-                grid-template-columns: 1fr;
+        /* 扫描区域样式 */
+        .scan-area {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .scan-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .scan-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+        .scan-status-indicator.active {
+            background: #34C759;
+            box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
+        }
+        .scan-hint {
+            color: #666;
+            font-size: 14px;
+        }
+        .scan-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #007AFF;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .scan-input:focus {
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+            border-color: #34C759;
+            background: #f0fff4;
+        }
+        /* 发票明细样式 */
+        .invoice-summary {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 30px;
+        }
+        .summary-item {
+            flex: 1;
+        }
+        .summary-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007AFF;
+        }
+        .summary-value.amount {
+            color: #34C759;
+        }
+        /* 设置页面样式 */
+        .settings-section {
+            margin-bottom: 40px;
+        }
+        .settings-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #007AFF;
+            padding-bottom: 10px;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        /* 报销单详情样式 */
+        .report-detail {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .report-detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .report-detail-label {
+            font-weight: bold;
+            width: 100px;
+            color: #666;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-draft {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+        .badge-submitted {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            min-width: 500px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        .btn-delete {
+            background: #FF3B30;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .btn-scan {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        /* 消息提示 */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+        .message.success {
+            background: #34C759;
+        }
+        .message.error {
+            background: #FF3B30;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
             }
-            table {
-                font-size: 14px;
-            }
-            th, td {
-                padding: 10px;
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
     </style>
@@ -180,48 +382,290 @@
             </div>
         </header>
 
-        <div class="summary">
-            <div class="summary-item">
-                <div class="summary-label">发票总数</div>
-                <div class="summary-value" id="totalCount">0</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">价税合计</div>
-                <div class="summary-value amount" id="totalAmount">¥0.00</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">今日识别</div>
-                <div class="summary-value" id="todayCount">0</div>
+        <!-- 导航标签 -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchPage('invoices')">🧾 发票管理</button>
+            <button class="nav-tab" onclick="switchPage('reports')">📋 报销单管理</button>
+            <button class="nav-tab" onclick="switchPage('settings')">⚙️ 系统设置</button>
+        </div>
+
+        <!-- 发票管理页面 -->
+        <div id="page-invoices" class="page active">
+            <div class="invoice-list">
+                <div class="list-header">
+                    <h2>发票明细</h2>
+                    <button class="btn btn-danger" onclick="clearAll()">🗑️ 清空全部</button>
+                </div>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>年份:</label>
+                        <select id="filterYear" onchange="applyFilters()">
+                            <option value="">全部</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>月份:</label>
+                        <select id="filterMonth" onchange="applyFilters()">
+                            <option value="">全部</option>
+                            <option value="01">1月</option>
+                            <option value="02">2月</option>
+                            <option value="03">3月</option>
+                            <option value="04">4月</option>
+                            <option value="05">5月</option>
+                            <option value="06">6月</option>
+                            <option value="07">7月</option>
+                            <option value="08">8月</option>
+                            <option value="09">9月</option>
+                            <option value="10">10月</option>
+                            <option value="11">11月</option>
+                            <option value="12">12月</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>部门:</label>
+                        <select id="filterDept" onchange="applyFilters()">
+                            <option value="">全部</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>人员:</label>
+                        <select id="filterEmp" onchange="applyFilters()">
+                            <option value="">全部</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <strong>总计: <span id="filteredTotal">¥0.00</span></strong>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>发票号码</th>
+                            <th>开票日期</th>
+                            <th>价税合计</th>
+                            <th>部门</th>
+                            <th>人员</th>
+                            <th>关联报销单</th>
+                            <th>识别时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState">
+                    暂无发票数据
+                </div>
             </div>
         </div>
 
-        <div class="qr-code">
-            <h3>📱 手机扫描访问</h3>
-            <div id="qrcode"></div>
-            <p>使用手机浏览器扫描二维码，或访问: <strong id="serverUrl">http://localhost:8000/mobile</strong></p>
+        <!-- 报销单列表页面 -->
+        <div id="page-reports" class="page">
+            <div class="report-list">
+                <div class="list-header">
+                    <h2>报销单列表</h2>
+                    <button class="btn btn-primary" onclick="showCreateReportModal()">➕ 新建报销单</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>报销单号</th>
+                            <th>部门</th>
+                            <th>人员</th>
+                            <th>报销事由</th>
+                            <th>发票数量</th>
+                            <th>总金额</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="reportEmptyState">
+                    暂无报销单
+                </div>
+            </div>
         </div>
 
-        <div class="invoice-list">
-            <div class="list-header">
-                <h2>发票明细</h2>
-                <button class="btn btn-danger" onclick="clearAll()">🗑️ 清空全部</button>
+        <!-- 报销单扫描页面 -->
+        <div id="page-scan" class="page">
+            <div class="scan-panel">
+                <div class="list-header">
+                    <h2>📋 发票扫描 - <span id="scanReportNumber"></span></h2>
+                    <button class="btn btn-gray" onclick="switchPage('reports')">← 返回列表</button>
+                </div>
+
+                <!-- 报销单基本信息 -->
+                <div class="report-detail">
+                    <div class="report-detail-row">
+                        <span class="report-detail-label">报销单号:</span>
+                        <span id="scanReportNumberDetail"></span>
+                    </div>
+                    <div class="report-detail-row">
+                        <span class="report-detail-label">部门:</span>
+                        <span id="scanReportDept"></span>
+                    </div>
+                    <div class="report-detail-row">
+                        <span class="report-detail-label">人员:</span>
+                        <span id="scanReportEmp"></span>
+                    </div>
+                    <div class="report-detail-row">
+                        <span class="report-detail-label">报销事由:</span>
+                        <span id="scanReportReason"></span>
+                    </div>
+                </div>
+
+                <!-- 扫描区域 -->
+                <div class="scan-area">
+                    <div class="scan-status">
+                        <div class="scan-status-indicator" id="scanIndicator"></div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 5px;">扫描状态</div>
+                            <div class="scan-hint">请使用蓝牙扫描器扫描发票二维码，或点击下方测试按钮</div>
+                        </div>
+                    </div>
+                    <input type="text" id="scanInput" class="scan-input" placeholder="等待扫描...（已自动聚焦）" autocomplete="off">
+                    <!-- 实时显示输入框的值，用于调试 -->
+                    <div style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+                        <span style="color: #666; font-size: 13px;">输入框实时值: </span>
+                        <span id="scanInputValue" style="font-family: monospace; color: #007AFF; font-weight: bold;">(空)</span>
+                        <span style="color: #999; font-size: 12px; margin-left: 10px;">长度: <span id="scanInputLength">0</span></span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button class="btn btn-primary" onclick="testScan()">🧪 测试扫描（模拟扫描器输入）</button>
+                        <span style="margin-left: 10px; color: #999; font-size: 13px;">使用测试数据: 01,31,,25312000000432294815,363.75,20251226,,577F</span>
+                    </div>
+                </div>
+
+                <!-- 发票汇总 -->
+                <div class="invoice-summary">
+                    <div class="summary-item">
+                        <div class="summary-label">发票数量</div>
+                        <div class="summary-value" id="scanInvoiceCount">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">价税合计</div>
+                        <div class="summary-value amount" id="scanTotalAmount">¥0.00</div>
+                    </div>
+                </div>
+
+                <!-- 发票明细 -->
+                <div style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px; color: #333;">发票明细</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>发票号码</th>
+                                <th>开票日期</th>
+                                <th>价税合计</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scanInvoiceList">
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="scanEmptyState">
+                        暂无发票，请扫描发票二维码
+                    </div>
+                </div>
+
+                <!-- 提交按钮 -->
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="btn btn-success" onclick="submitCurrentReport()">✅ 提交报销单</button>
+                </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>发票号码</th>
-                        <th>开票日期</th>
-                        <th>价税合计</th>
-                        <th>识别时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody id="invoiceTableBody">
-                </tbody>
-            </table>
-            <div class="empty-state" id="emptyState">
-                暂无发票数据，请使用手机扫描识别
+        </div>
+
+        <!-- 系统设置页面 -->
+        <div id="page-settings" class="page">
+            <div class="settings-panel">
+                <div class="settings-section">
+                    <h3>🏢 部门管理</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>部门编码</label>
+                            <input type="text" id="deptCode" placeholder="例如: IT">
+                        </div>
+                        <div class="form-group">
+                            <label>部门名称</label>
+                            <input type="text" id="deptName" placeholder="例如: 技术部">
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;">
+                            <button class="btn btn-primary" onclick="createDepartment()">添加部门</button>
+                        </div>
+                    </div>
+                    <table style="margin-top:15px;">
+                        <thead>
+                            <tr>
+                                <th>部门编码</th>
+                                <th>部门名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deptTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="settings-section">
+                    <h3>👤 人员管理</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>人员编码</label>
+                            <input type="text" id="empCode" placeholder="例如: E001">
+                        </div>
+                        <div class="form-group">
+                            <label>姓名</label>
+                            <input type="text" id="empName" placeholder="例如: 张三">
+                        </div>
+                        <div class="form-group">
+                            <label>所属部门</label>
+                            <select id="empDept">
+                                <option value="">请选择部门</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;">
+                            <button class="btn btn-primary" onclick="createEmployee()">添加人员</button>
+                        </div>
+                    </div>
+                    <table style="margin-top:15px;">
+                        <thead>
+                            <tr>
+                                <th>人员编码</th>
+                                <th>姓名</th>
+                                <th>所属部门</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="empTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🔐 账户设置</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>旧密码</label>
+                            <input type="password" id="oldPassword" placeholder="请输入旧密码">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" id="newPassword" placeholder="请输入新密码">
+                        </div>
+                        <div class="form-group">
+                            <label>确认新密码</label>
+                            <input type="password" id="confirmPassword" placeholder="请再次输入新密码">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="changePassword()">修改密码</button>
+                    <button class="btn btn-danger" onclick="logout()" style="margin-left:10px;">退出登录</button>
+                </div>
             </div>
         </div>
     </div>
@@ -229,76 +673,623 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script>
         const API_BASE = window.location.origin;
-        const WS_URL = `ws://${window.location.host}/ws`;
+        // 根据页面协议自动选择 ws:// 或 wss://
+        const WS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const WS_URL = `${WS_PROTOCOL}//${window.location.host}/ws`;
+
+        console.log('[初始化] API_BASE=', API_BASE, 'WS_URL=', WS_URL);
 
         let ws = null;
         let invoices = [];
+        let expenseReports = [];
+        let departments = [];
+        let employees = [];
+        let currentScanReport = null;
+        let currentScanInvoices = [];
+        let scanBuffer = '';
+        let scanTimeout = null;
+        let lastValue = '';
+        let monitorInterval = null;
+        let focusCheckInterval = null;
+
+        // 全局函数：更新扫描输入框显示
+        function updateScanDisplay() {
+            const scanInput = document.getElementById('scanInput');
+            if (!scanInput) return;
+
+            const valueEl = document.getElementById('scanInputValue');
+            const lengthEl = document.getElementById('scanInputLength');
+            if (valueEl && lengthEl) {
+                const value = scanInput.value;
+                valueEl.textContent = value ? `"${value}"` : '(空)';
+                lengthEl.textContent = value.length;
+            }
+        }
+
+        // 初始化扫描监听
+        function initScanListener() {
+            console.log('[扫描监听] ============ initScanListener 被调用 ============');
+            const scanInput = document.getElementById('scanInput');
+            console.log('[扫描监听] scanInput 元素:', scanInput);
+
+            console.log('[初始化] 设置扫描监听器');
+
+            // 强制聚焦并保持焦点
+            const forceFocus = () => {
+                setTimeout(() => {
+                    scanInput.focus();
+                    console.log('[聚焦] 强制聚焦输入框, activeElement=', document.activeElement === scanInput ? '✓ 成功' : '✗ 失败');
+                    updateScanDisplay();
+                }, 50);
+            };
+
+            // 定期检查并恢复焦点
+            const startFocusCheck = () => {
+                if (focusCheckInterval) clearInterval(focusCheckInterval);
+                focusCheckInterval = setInterval(() => {
+                    if (document.activeElement !== scanInput) {
+                        console.log('[焦点检测] 输入框失去焦点，正在恢复...');
+                        scanInput.focus();
+                    }
+                }, 500); // 每500ms检查一次
+            };
+
+            const stopFocusCheck = () => {
+                if (focusCheckInterval) {
+                    clearInterval(focusCheckInterval);
+                    focusCheckInterval = null;
+                }
+            };
+
+            // 页面切换或点击时自动聚焦
+            const focusInput = () => {
+                forceFocus();
+                startFocusCheck();
+            };
+
+            // 监听页面可见性变化
+            const scanPage = document.getElementById('page-scan');
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.target.classList.contains('active')) {
+                        console.log('[页面] 扫描页面激活');
+                        focusInput();
+                        startMonitor();
+                    } else {
+                        console.log('[页面] 扫描页面隐藏');
+                        stopMonitor();
+                        stopFocusCheck();
+                    }
+                });
+            });
+            observer.observe(scanPage, { attributes: true, attributeFilter: ['class'] });
+
+            // 点击页面任意位置时聚焦输入框（除了按钮）
+            document.getElementById('page-scan').addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON' && e.target !== scanInput) {
+                    console.log('[点击] 页面被点击，重新聚焦');
+                    scanInput.focus();
+                }
+            });
+
+            // 监听焦点事件
+            scanInput.addEventListener('focus', () => {
+                console.log('[事件] input 触发 focus 事件');
+                updateScanDisplay();
+            });
+
+            scanInput.addEventListener('blur', () => {
+                console.log('[事件] input 触发 blur 事件，正在恢复焦点...');
+                setTimeout(() => scanInput.focus(), 10);
+            });
+
+            // 监听键盘事件（合并调试和回车处理）
+            scanInput.addEventListener('keydown', async (e) => {
+                console.log(`[键盘] key=${e.key}, code=${e.code}, value="${scanInput.value}"`);
+                updateScanDisplay();
+
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const inputValue = scanInput.value.trim();
+                    console.log(`[回车] 捕获到回车，值="${inputValue}", 长度=${inputValue.length}`);
+                    scanInput.value = ''; // 立即清空
+                    updateScanDisplay();
+
+                    if (inputValue && inputValue.length > 10) {
+                        console.log('[扫描] ✓ 通过回车触发，长度满足要求');
+                        clearTimeout(scanTimeout);
+                        await processScanInput(inputValue);
+                    } else {
+                        console.log('[扫描] ✗ 回车触发但长度不满足要求:', inputValue.length);
+                    }
+                    scanInput.focus(); // 重新聚焦
+                }
+            });
+
+            // 监听输入（作为备用方案，处理无回车的扫描器）
+            scanInput.addEventListener('input', (e) => {
+                const inputValue = e.target.value;
+                scanBuffer = inputValue;
+                console.log(`[输入] input事件触发, 值="${inputValue}", 长度=${inputValue.length}`);
+                updateScanDisplay();
+
+                // 设置超时，如果150ms内没有新输入，认为扫描完成
+                clearTimeout(scanTimeout);
+                scanTimeout = setTimeout(async () => {
+                    if (scanBuffer && scanBuffer.length > 10) {
+                        console.log('[扫描] ✓ 通过超时触发，长度满足要求');
+                        scanInput.value = '';
+                        updateScanDisplay();
+                        await processScanInput(scanBuffer);
+                        scanBuffer = '';
+                        scanInput.focus();
+                    }
+                }, 150);
+            });
+
+            // 监听值变化（使用 propertychange 事件兼容 IE）
+            scanInput.addEventListener('change', (e) => {
+                console.log(`[change] change事件触发, 值="${e.target.value}"`);
+                updateScanDisplay();
+            });
+
+            // 轮询监控输入框值变化（最后手段）
+            const startMonitor = () => {
+                if (monitorInterval) clearInterval(monitorInterval);
+                console.log('[监控] =========== 启动轮询监控 ============');
+                monitorInterval = setInterval(() => {
+                    const currentValue = scanInput.value;
+                    updateScanDisplay();
+
+                    if (currentValue !== lastValue) {
+                        console.log(`[监控] ⚠️ 检测到值变化: "${lastValue}" -> "${currentValue}", 长度=${currentValue.length}`);
+                        lastValue = currentValue;
+
+                        // 如果值长度大于10且500ms没有变化，自动提交
+                        if (currentValue.length > 10) {
+                            clearTimeout(scanTimeout);
+                            scanTimeout = setTimeout(async () => {
+                                if (scanInput.value.length > 10 && scanInput.value === currentValue) {
+                                    console.log('[监控] ✓✓✓ 超时自动提交！长度=', currentValue.length);
+                                    const valueToSubmit = scanInput.value.trim();
+                                    scanInput.value = '';
+                                    lastValue = '';
+                                    updateScanDisplay();
+                                    await processScanInput(valueToSubmit);
+                                    scanInput.focus();
+                                }
+                            }, 500);
+                        }
+                    }
+                }, 100); // 每100ms检查一次
+            };
+
+            const stopMonitor = () => {
+                if (monitorInterval) {
+                    clearInterval(monitorInterval);
+                    monitorInterval = null;
+                    console.log('[监控] 停止轮询监控');
+                }
+            };
+        }
+        function getAuthHeaders() {
+            const token = localStorage.getItem('token');
+            return token ? { 'Authorization': `Bearer ${token}` } : {};
+        }
+
+        // 检查登录状态
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return false;
+            }
+            return true;
+        }
+
+        // 切换页面
+        function switchPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+            if (pageName === 'scan') {
+                document.getElementById('page-scan').classList.add('active');
+            } else {
+                document.getElementById(`page-${pageName}`).classList.add('active');
+                const tabs = document.querySelectorAll('.nav-tab');
+                if (pageName === 'invoices') tabs[0].classList.add('active');
+                if (pageName === 'reports') tabs[1].classList.add('active');
+                if (pageName === 'settings') tabs[2].classList.add('active');
+            }
+
+            // 加载对应数据
+            if (pageName === 'reports') {
+                loadExpenseReports();
+            } else if (pageName === 'settings') {
+                loadDepartments();
+                loadEmployees();
+            } else if (pageName === 'invoices') {
+                loadInvoices();
+            }
+        }
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
-            loadInvoices();
+            console.log('[页面] DOMContentLoaded 事件触发');
+            if (!checkAuth()) return;
+            console.log('[页面] 认证检查通过');
+
             initWebSocket();
-            generateQRCode();
+            loadInvoices();
+            initFilters();
+            initScanListener();
+            console.log('[页面] 初始化完成');
         });
 
-        // 生成二维码
-        function generateQRCode() {
-            const mobileUrl = `${window.location.origin}/mobile`;
-            document.getElementById('serverUrl').textContent = mobileUrl;
-            QRCode.toCanvas(document.createElement('canvas'), mobileUrl, { width: 200 }, (error, canvas) => {
-                if (!error) {
-                    document.getElementById('qrcode').appendChild(canvas);
+        // 初始化过滤器
+        function initFilters() {
+            const yearSelect = document.getElementById('filterYear');
+            const currentYear = new Date().getFullYear();
+            for (let y = currentYear; y >= currentYear - 5; y--) {
+                const option = document.createElement('option');
+                option.value = y;
+                option.textContent = y + '年';
+                yearSelect.appendChild(option);
+            }
+        }
+
+        // 初始化扫描监听
+        function initScanListener() {
+            const scanInput = document.getElementById('scanInput');
+            let scanBuffer = '';
+            let scanTimeout = null;
+            let lastValue = '';
+            let monitorInterval = null;
+            let focusCheckInterval = null;
+
+            console.log('[初始化] 设置扫描监听器');
+
+            // 更新实时显示
+            const updateDisplay = () => {
+                const valueEl = document.getElementById('scanInputValue');
+                const lengthEl = document.getElementById('scanInputLength');
+                if (valueEl && lengthEl) {
+                    const value = scanInput.value;
+                    valueEl.textContent = value ? `"${value}"` : '(空)';
+                    lengthEl.textContent = value.length;
+                }
+            };
+
+            // 强制聚焦并保持焦点
+            const forceFocus = () => {
+                setTimeout(() => {
+                    scanInput.focus();
+                    console.log('[聚焦] 强制聚焦输入框, activeElement=', document.activeElement === scanInput ? '✓ 成功' : '✗ 失败');
+                }, 50);
+            };
+
+            // 定期检查并恢复焦点
+            const startFocusCheck = () => {
+                if (focusCheckInterval) clearInterval(focusCheckInterval);
+                focusCheckInterval = setInterval(() => {
+                    if (document.activeElement !== scanInput) {
+                        console.log('[焦点检测] 输入框失去焦点，正在恢复...');
+                        scanInput.focus();
+                    }
+                }, 500); // 每500ms检查一次
+            };
+
+            const stopFocusCheck = () => {
+                if (focusCheckInterval) {
+                    clearInterval(focusCheckInterval);
+                    focusCheckInterval = null;
+                }
+            };
+
+            // 页面切换或点击时自动聚焦
+            const focusInput = () => {
+                forceFocus();
+                startFocusCheck();
+            };
+
+            // 监听页面可见性变化
+            const scanPage = document.getElementById('page-scan');
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.target.classList.contains('active')) {
+                        console.log('[页面] 扫描页面激活');
+                        focusInput();
+                        startMonitor();
+                    } else {
+                        console.log('[页面] 扫描页面隐藏');
+                        stopMonitor();
+                        stopFocusCheck();
+                    }
+                });
+            });
+            observer.observe(scanPage, { attributes: true, attributeFilter: ['class'] });
+
+            // 点击页面任意位置时聚焦输入框（除了按钮）
+            document.getElementById('page-scan').addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON' && e.target !== scanInput) {
+                    console.log('[点击] 页面被点击，重新聚焦');
+                    scanInput.focus();
                 }
             });
+
+            // 监听焦点事件
+            scanInput.addEventListener('focus', () => {
+                console.log('[事件] input 触发 focus 事件');
+                updateScanDisplay();
+            });
+
+            scanInput.addEventListener('blur', () => {
+                console.log('[事件] input 触发 blur 事件，正在恢复焦点...');
+                setTimeout(() => scanInput.focus(), 10);
+            });
+
+            // 监听键盘事件（合并调试和回车处理）
+            scanInput.addEventListener('keydown', async (e) => {
+                console.log(`[键盘] key=${e.key}, code=${e.code}, value="${scanInput.value}"`);
+                updateScanDisplay();
+
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const inputValue = scanInput.value.trim();
+                    console.log(`[回车] 捕获到回车，值="${inputValue}", 长度=${inputValue.length}`);
+                    scanInput.value = ''; // 立即清空
+                    updateScanDisplay();
+
+                    if (inputValue && inputValue.length > 10) {
+                        console.log('[扫描] ✓ 通过回车触发，长度满足要求');
+                        clearTimeout(scanTimeout);
+                        await processScanInput(inputValue);
+                    } else {
+                        console.log('[扫描] ✗ 回车触发但长度不满足要求:', inputValue.length);
+                    }
+                    scanInput.focus(); // 重新聚焦
+                }
+            });
+
+            // 监听输入（作为备用方案，处理无回车的扫描器）
+            scanInput.addEventListener('input', (e) => {
+                const inputValue = e.target.value;
+                scanBuffer = inputValue;
+                console.log(`[输入] input事件触发, 值="${inputValue}", 长度=${inputValue.length}`);
+                updateScanDisplay();
+
+                // 设置超时，如果150ms内没有新输入，认为扫描完成
+                clearTimeout(scanTimeout);
+                scanTimeout = setTimeout(async () => {
+                    if (scanBuffer && scanBuffer.length > 10) {
+                        console.log('[扫描] ✓ 通过超时触发，长度满足要求');
+                        scanInput.value = '';
+                        updateScanDisplay();
+                        await processScanInput(scanBuffer);
+                        scanBuffer = '';
+                        scanInput.focus();
+                    }
+                }, 150);
+            });
+
+            // 监听值变化（使用 propertychange 事件兼容 IE）
+            scanInput.addEventListener('change', (e) => {
+                console.log(`[change] change事件触发, 值="${e.target.value}"`);
+            });
+
+            // 轮询监控输入框值变化（最后手段）
+            const startMonitor = () => {
+                if (monitorInterval) clearInterval(monitorInterval);
+                console.log('[监控] 启动轮询监控');
+                monitorInterval = setInterval(() => {
+                    const currentValue = scanInput.value;
+                    updateScanDisplay();
+
+                    if (currentValue !== lastValue) {
+                        console.log(`[监控] 检测到值变化: "${lastValue}" -> "${currentValue}"`);
+                        lastValue = currentValue;
+
+                        // 如果值长度大于10且500ms没有变化，自动提交
+                        if (currentValue.length > 10) {
+                            clearTimeout(scanTimeout);
+                            scanTimeout = setTimeout(async () => {
+                                if (scanInput.value.length > 10 && scanInput.value === currentValue) {
+                                    console.log('[监控] ✓ 超时自动提交');
+                                    const valueToSubmit = scanInput.value.trim();
+                                    scanInput.value = '';
+                                    lastValue = '';
+                                    updateScanDisplay();
+                                    await processScanInput(valueToSubmit);
+                                    scanInput.focus();
+                                }
+                            }, 500);
+                        }
+                    }
+                }, 100); // 每100ms检查一次
+            };
+
+            const stopMonitor = () => {
+                if (monitorInterval) {
+                    clearInterval(monitorInterval);
+                    monitorInterval = null;
+                    console.log('[监控] 停止轮询监控');
+                }
+            };
+        }
+
+        // 处理扫描输入
+        async function processScanInput(qrData) {
+            if (!currentScanReport) {
+                showMessage('请先选择报销单', 'error');
+                return;
+            }
+
+            console.log('[扫描] 开始处理:', qrData);
+            document.getElementById('scanIndicator').classList.add('active');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/recognize-qrcode`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({
+                        qr_data: qrData,
+                        report_id: currentScanReport.id
+                    })
+                });
+
+                const data = await response.json();
+                console.log('[扫描] 服务器响应:', data);
+
+                if (data.success) {
+                    showMessage(`✅ 扫描成功: ${data.data.invoice_number}`, 'success');
+                    await loadScanReportData();
+                } else if (data.duplicate) {
+                    // 发票重复，显示警告但不中断流程
+                    showMessage(`⚠️ ${data.message}`, 'error');
+                    console.log('[扫描] 发票重复，继续等待下次扫描');
+                } else {
+                    showMessage(`❌ ${data.message || '扫描失败'}`, 'error');
+                }
+            } catch (error) {
+                showMessage('❌ 网络错误', 'error');
+                console.error('[扫描] 错误:', error);
+            } finally {
+                setTimeout(() => {
+                    document.getElementById('scanIndicator').classList.remove('active');
+                }, 500);
+            }
+        }
+
+        // 测试扫描功能（模拟蓝牙扫描器）
+        async function testScan() {
+            const testData = '01,31,,25312000000432294815,363.75,20251226,,577F';
+            const scanInput = document.getElementById('scanInput');
+
+            console.log('[测试] 模拟扫描器输入:', testData);
+            scanInput.focus();
+            scanInput.value = testData;
+
+            // 模拟扫描器发送回车键
+            setTimeout(async () => {
+                const enterEvent = new KeyboardEvent('keydown', {
+                    key: 'Enter',
+                    code: 'Enter',
+                    keyCode: 13,
+                    bubbles: true
+                });
+                scanInput.dispatchEvent(enterEvent);
+            }, 100);
         }
 
         // 加载发票数据
         async function loadInvoices() {
             try {
-                const response = await fetch(`${API_BASE}/api/invoices`);
+                const response = await fetch(`${API_BASE}/api/invoices`, {
+                    headers: getAuthHeaders()
+                });
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
                 const data = await response.json();
                 invoices = data.invoices;
-                updateUI(data);
+                applyFilters();
             } catch (error) {
                 console.error('加载数据失败:', error);
             }
         }
 
-        // 更新界面
-        function updateUI(data) {
-            // 更新汇总
-            document.getElementById('totalCount').textContent = data.total_count;
-            document.getElementById('totalAmount').textContent = '¥' + data.total_amount.toFixed(2);
+        // 应用过滤器
+        function applyFilters() {
+            const year = document.getElementById('filterYear').value;
+            const month = document.getElementById('filterMonth').value;
+            const deptCode = document.getElementById('filterDept').value;
+            const empCode = document.getElementById('filterEmp').value;
 
-            // 今日识别数量
-            const today = new Date().toDateString();
-            const todayCount = data.invoices.filter(inv => {
-                const invDate = new Date(inv.created_at).toDateString();
-                return invDate === today;
-            }).length;
-            document.getElementById('todayCount').textContent = todayCount;
+            let filtered = invoices;
+
+            // 按年月过滤
+            if (year || month) {
+                filtered = filtered.filter(inv => {
+                    const dateStr = inv.invoice_date;
+                    if (dateStr && dateStr.length >= 6) {
+                        const invYear = dateStr.substring(0, 4);
+                        const invMonth = dateStr.substring(4, 6);
+                        if (year && invYear !== year) return false;
+                        if (month && invMonth !== month) return false;
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            // 按部门和人员过滤（需要通过报销单关联）
+            if (deptCode || empCode) {
+                filtered = filtered.filter(inv => {
+                    if (!inv.report_id) return false;
+
+                    const report = expenseReports.find(r => r.id === inv.report_id);
+                    if (!report) return false;
+
+                    if (deptCode && report.department_code !== deptCode) return false;
+                    if (empCode && report.employee_code !== empCode) return false;
+
+                    return true;
+                });
+            }
+
+            // 计算总金额
+            const total = filtered.reduce((sum, inv) => sum + inv.total_amount, 0);
+            document.getElementById('filteredTotal').textContent = '¥' + total.toFixed(2);
 
             // 更新表格
+            updateInvoiceTable(filtered);
+
+            // 更新部门和人员过滤器选项
+            updateFilterOptions();
+        }
+
+        // 更新过滤器选项
+        function updateFilterOptions() {
+            // 已在加载部门和人员时填充
+        }
+
+        // 更新发票表格
+        function updateInvoiceTable(data) {
             const tbody = document.getElementById('invoiceTableBody');
             const emptyState = document.getElementById('emptyState');
 
-            if (data.invoices.length === 0) {
+            if (data.length === 0) {
                 tbody.innerHTML = '';
                 emptyState.style.display = 'block';
             } else {
                 emptyState.style.display = 'none';
-                tbody.innerHTML = data.invoices.map((inv, index) => `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><code>${inv.invoice_number}</code></td>
-                        <td>${formatDate(inv.invoice_date)}</td>
-                        <td><strong>¥${inv.total_amount.toFixed(2)}</strong></td>
-                        <td>${formatDateTime(inv.created_at)}</td>
-                        <td>
-                            <button class="btn-delete" onclick="deleteInvoice('${inv.id}')">删除</button>
-                        </td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = data.map((inv, index) => {
+                    // 查找关联的报销单
+                    const report = inv.report_id ? expenseReports.find(r => r.id === inv.report_id) : null;
+                    const deptName = report ? (report.department_name || report.department_code) : '-';
+                    const empName = report ? (report.employee_name || report.employee_code) : '-';
+                    const reportNum = report ? report.report_number : '-';
+
+                    return `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><code>${inv.invoice_number}</code></td>
+                            <td>${formatDate(inv.invoice_date)}</td>
+                            <td><strong>¥${inv.total_amount.toFixed(2)}</strong></td>
+                            <td>${deptName}</td>
+                            <td>${empName}</td>
+                            <td>${reportNum}</td>
+                            <td>${formatDateTime(inv.created_at)}</td>
+                            <td>
+                                <button class="btn-delete" onclick="deleteInvoice('${inv.id}')">删除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             }
         }
 
@@ -307,7 +1298,10 @@
             if (!confirm('确定要删除这张发票吗？')) return;
 
             try {
-                await fetch(`${API_BASE}/api/invoices/${id}`, { method: 'DELETE' });
+                await fetch(`${API_BASE}/api/invoices/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
                 await loadInvoices();
             } catch (error) {
                 alert('删除失败');
@@ -319,14 +1313,617 @@
             if (!confirm('确定要清空所有发票吗？此操作不可恢复！')) return;
 
             try {
-                await fetch(`${API_BASE}/api/invoices`, { method: 'DELETE' });
+                await fetch(`${API_BASE}/api/invoices`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
                 await loadInvoices();
             } catch (error) {
                 alert('清空失败');
             }
         }
 
-        // WebSocket连接
+        // ========== 报销单管理 ==========
+
+        // 加载报销单
+        async function loadExpenseReports() {
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports`, {
+                    headers: getAuthHeaders()
+                });
+                const result = await response.json();
+                expenseReports = result.data || [];
+                updateReportUI();
+            } catch (error) {
+                console.error('加载报销单失败:', error);
+            }
+        }
+
+        // 更新报销单UI
+        function updateReportUI() {
+            const tbody = document.getElementById('reportTableBody');
+            const emptyState = document.getElementById('reportEmptyState');
+
+            if (expenseReports.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                tbody.innerHTML = expenseReports.map(report => `
+                    <tr>
+                        <td><code>${report.report_number}</code></td>
+                        <td>${report.department_name || report.department_code}</td>
+                        <td>${report.employee_name || report.employee_code}</td>
+                        <td>${report.reason}</td>
+                        <td>${report.invoice_count}</td>
+                        <td><strong>¥${report.total_amount.toFixed(2)}</strong></td>
+                        <td><span class="badge ${report.status === 'submitted' ? 'badge-submitted' : 'badge-draft'}">${report.status === 'submitted' ? '已提交' : '草稿'}</span></td>
+                        <td>
+                            <button class="btn-scan" onclick="viewReportInvoices('${report.id}')">📄 查看发票</button>
+                            ${report.status === 'draft' ? `<button class="btn-scan" onclick="openScanPage('${report.id}')">📷 扫描</button>` : ''}
+                            <button class="btn-delete" onclick="deleteReport('${report.id}')">删除</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // 查看报销单的发票列表
+        async function viewReportInvoices(reportId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports/${reportId}`, {
+                    headers: getAuthHeaders()
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    const report = result.data.report;
+                    const invoices = result.data.invoices;
+
+                    const modal = document.createElement('div');
+                    modal.className = 'modal-overlay';
+                    modal.innerHTML = `
+                        <div class="modal">
+                            <h2>📄 报销单发票明细</h2>
+                            <div class="report-detail">
+                                <div class="report-detail-row">
+                                    <span class="report-detail-label">报销单号:</span>
+                                    <span>${report.report_number}</span>
+                                </div>
+                                <div class="report-detail-row">
+                                    <span class="report-detail-label">部门:</span>
+                                    <span>${report.department_name || report.department_code}</span>
+                                </div>
+                                <div class="report-detail-row">
+                                    <span class="report-detail-label">人员:</span>
+                                    <span>${report.employee_name || report.employee_code}</span>
+                                </div>
+                                <div class="report-detail-row">
+                                    <span class="report-detail-label">报销事由:</span>
+                                    <span>${report.reason}</span>
+                                </div>
+                                <div class="report-detail-row">
+                                    <span class="report-detail-label">发票数量:</span>
+                                    <span>${invoices.length}</span>
+                                </div>
+                                <div class="report-detail-row">
+                                    <span class="report-detail-label">总金额:</span>
+                                    <span><strong>¥${report.total_amount.toFixed(2)}</strong></span>
+                                </div>
+                            </div>
+                            <h3>发票列表 (${invoices.length})</h3>
+                            ${invoices.length === 0 ? '<p style="text-align:center;color:#999;padding:20px;">暂无发票</p>' : `
+                                <table style="margin-top:15px;">
+                                    <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>发票号码</th>
+                                            <th>开票日期</th>
+                                            <th>价税合计</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${invoices.map((inv, index) => `
+                                            <tr>
+                                                <td>${index + 1}</td>
+                                                <td><code>${inv.invoice_number}</code></td>
+                                                <td>${formatDate(inv.invoice_date)}</td>
+                                                <td><strong>¥${inv.total_amount.toFixed(2)}</strong></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            `}
+                            <div class="modal-buttons">
+                                <button class="btn" onclick="this.closest('.modal-overlay').remove()">关闭</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                } else {
+                    alert('加载失败');
+                }
+            } catch (error) {
+                alert('加载失败');
+                console.error(error);
+            }
+        }
+
+        // 打开扫描页面
+        async function openScanPage(reportId) {
+            const report = expenseReports.find(r => r.id === reportId);
+            if (!report) return;
+
+            currentScanReport = report;
+            await loadScanReportData();
+            switchPage('scan');
+
+            // 页面切换后自动聚焦
+            setTimeout(() => {
+                const scanInput = document.getElementById('scanInput');
+                if (scanInput) {
+                    scanInput.focus();
+                    console.log('[打开页面] 扫描输入框已聚焦, value=', scanInput.value);
+
+                    // 确保轮询监控启动
+                    updateScanDisplay();
+                }
+            }, 100);
+        }
+
+        // 加载扫描页面的报销单数据
+        async function loadScanReportData() {
+            if (!currentScanReport) return;
+
+            // 更新基本信息
+            document.getElementById('scanReportNumber').textContent = currentScanReport.report_number;
+            document.getElementById('scanReportNumberDetail').textContent = currentScanReport.report_number;
+            document.getElementById('scanReportDept').textContent = currentScanReport.department_name || currentScanReport.department_code;
+            document.getElementById('scanReportEmp').textContent = currentScanReport.employee_name || currentScanReport.employee_code;
+            document.getElementById('scanReportReason').textContent = currentScanReport.reason;
+
+            // 加载发票列表
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports/${currentScanReport.id}`, {
+                    headers: getAuthHeaders()
+                });
+                const result = await response.json();
+                currentScanInvoices = result.data.invoices || [];
+
+                updateScanInvoiceList();
+            } catch (error) {
+                console.error('加载发票失败:', error);
+            }
+        }
+
+        // 更新扫描页面的发票列表
+        function updateScanInvoiceList() {
+            const tbody = document.getElementById('scanInvoiceList');
+            const emptyState = document.getElementById('scanEmptyState');
+            const countEl = document.getElementById('scanInvoiceCount');
+            const totalEl = document.getElementById('scanTotalAmount');
+
+            // 更新汇总
+            countEl.textContent = currentScanInvoices.length;
+            const total = currentScanInvoices.reduce((sum, inv) => sum + inv.total_amount, 0);
+            totalEl.textContent = '¥' + total.toFixed(2);
+
+            if (currentScanInvoices.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                tbody.innerHTML = currentScanInvoices.map((inv, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><code>${inv.invoice_number}</code></td>
+                        <td>${formatDate(inv.invoice_date)}</td>
+                        <td><strong>¥${inv.total_amount.toFixed(2)}</strong></td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteScanInvoice('${inv.id}')">删除</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // 删除扫描页面的发票
+        async function deleteScanInvoice(invoiceId) {
+            if (!confirm('确定要删除这张发票吗？')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/invoices/${invoiceId}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                await loadScanReportData();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        // 提交当前报销单
+        async function submitCurrentReport() {
+            if (!currentScanReport) return;
+
+            if (currentScanInvoices.length === 0) {
+                alert('报销单还没有发票，请先扫描发票');
+                return;
+            }
+
+            if (!confirm('确定要提交此报销单吗？提交后将无法修改。')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports/${currentScanReport.id}/submit`, {
+                    method: 'POST',
+                    headers: getAuthHeaders()
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('报销单提交成功');
+                    currentScanReport = null;
+                    currentScanInvoices = [];
+                    switchPage('reports');
+                    loadExpenseReports();
+                } else {
+                    alert(result.message || '提交失败');
+                }
+            } catch (error) {
+                alert('提交失败');
+            }
+        }
+
+        // 显示创建报销单对话框
+        async function showCreateReportModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal">
+                    <h2>新建报销单</h2>
+                    <div class="form-group">
+                        <label>报销单号</label>
+                        <input type="text" id="newReportNumber" placeholder="例如: BX20250113001">
+                    </div>
+                    <div class="form-group" style="margin-top:15px;">
+                        <label>部门</label>
+                        <select id="newReportDept">
+                            <option value="">加载中...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top:15px;">
+                        <label>人员</label>
+                        <select id="newReportEmp">
+                            <option value="">加载中...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top:15px;">
+                        <label>报销事由</label>
+                        <input type="text" id="newReportReason" placeholder="例如: 差旅费报销">
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="btn" onclick="this.closest('.modal-overlay').remove()">取消</button>
+                        <button class="btn btn-primary" onclick="createReport()">创建</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // 动态加载部门和人员数据
+            try {
+                const [deptRes, empRes] = await Promise.all([
+                    fetch(`${API_BASE}/api/departments`, { headers: getAuthHeaders() }),
+                    fetch(`${API_BASE}/api/employees`, { headers: getAuthHeaders() })
+                ]);
+
+                const depts = (await deptRes.json()).data || [];
+                const emps = (await empRes.json()).data || [];
+
+                // 更新部门下拉框
+                const deptSelect = document.getElementById('newReportDept');
+                deptSelect.innerHTML = '<option value="">请选择部门</option>' +
+                    depts.map(d => `<option value="${d.code}">${d.name} (${d.code})</option>`).join('');
+
+                // 更新人员下拉框
+                const empSelect = document.getElementById('newReportEmp');
+                empSelect.innerHTML = '<option value="">请选择人员</option>' +
+                    emps.map(e => `<option value="${e.code}">${e.name} (${e.code})</option>`).join('');
+
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                alert('加载数据失败，请先在系统设置中创建部门和人员');
+                modal.remove();
+            }
+        }
+
+        // 创建报销单
+        async function createReport() {
+            const reportNumber = document.getElementById('newReportNumber').value;
+            const departmentCode = document.getElementById('newReportDept').value;
+            const employeeCode = document.getElementById('newReportEmp').value;
+            const reason = document.getElementById('newReportReason').value;
+
+            if (!reportNumber || !departmentCode || !employeeCode || !reason) {
+                alert('请填写所有字段');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/expense-reports`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({
+                        report_number: reportNumber,
+                        department_code: departmentCode,
+                        employee_code: employeeCode,
+                        reason: reason
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('报销单创建成功');
+                    document.querySelector('.modal-overlay').remove();
+                    loadExpenseReports();
+                } else {
+                    alert(result.message || '创建失败');
+                }
+            } catch (error) {
+                alert('创建失败');
+            }
+        }
+
+        // 删除报销单
+        async function deleteReport(reportId) {
+            if (!confirm('确定要删除此报销单吗？关联的发票将解除绑定。')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/expense-reports/${reportId}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                loadExpenseReports();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        // ========== 部门管理 ==========
+
+        // 加载部门
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_BASE}/api/departments`, {
+                    headers: getAuthHeaders()
+                });
+                const result = await response.json();
+                departments = result.data || [];
+                updateDeptUI();
+                updateDeptSelect();
+            } catch (error) {
+                console.error('加载部门失败:', error);
+            }
+        }
+
+        // 更新部门UI
+        function updateDeptUI() {
+            const tbody = document.getElementById('deptTableBody');
+            tbody.innerHTML = departments.map(dept => `
+                <tr>
+                    <td><code>${dept.code}</code></td>
+                    <td>${dept.name}</td>
+                    <td>
+                        <button class="btn-delete" onclick="deleteDepartment('${dept.code}')">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 更新部门下拉框
+        function updateDeptSelect() {
+            const selects = document.querySelectorAll('#empDept, #newReportDept, #filterDept');
+            selects.forEach(select => {
+                const currentValue = select.value;
+                const isFilter = select.id === 'filterDept';
+                select.innerHTML = '<option value="">' + (isFilter ? '全部' : '请选择部门') + '</option>' +
+                    departments.map(d => `<option value="${d.code}">${d.name} (${d.code})</option>`).join('');
+                select.value = currentValue;
+            });
+        }
+
+        // 创建部门
+        async function createDepartment() {
+            const code = document.getElementById('deptCode').value;
+            const name = document.getElementById('deptName').value;
+
+            if (!code || !name) {
+                alert('请填写所有字段');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/departments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({ code, name })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('部门创建成功');
+                    document.getElementById('deptCode').value = '';
+                    document.getElementById('deptName').value = '';
+                    loadDepartments();
+                } else {
+                    alert(result.message || '创建失败');
+                }
+            } catch (error) {
+                alert('创建失败');
+            }
+        }
+
+        // 删除部门
+        async function deleteDepartment(code) {
+            if (!confirm('确定要删除此部门吗？')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/departments/${code}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                loadDepartments();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        // ========== 人员管理 ==========
+
+        // 加载人员
+        async function loadEmployees() {
+            try {
+                const response = await fetch(`${API_BASE}/api/employees`, {
+                    headers: getAuthHeaders()
+                });
+                const result = await response.json();
+                employees = result.data || [];
+                updateEmpUI();
+                updateEmpSelect();
+            } catch (error) {
+                console.error('加载人员失败:', error);
+            }
+        }
+
+        // 更新人员UI
+        function updateEmpUI() {
+            const tbody = document.getElementById('empTableBody');
+            tbody.innerHTML = employees.map(emp => `
+                <tr>
+                    <td><code>${emp.code}</code></td>
+                    <td>${emp.name}</td>
+                    <td>${emp.department_name || emp.department_code}</td>
+                    <td>
+                        <button class="btn-delete" onclick="deleteEmployee('${emp.code}')">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 更新人员下拉框
+        function updateEmpSelect() {
+            const selects = document.querySelectorAll('#newReportEmp, #filterEmp');
+            selects.forEach(select => {
+                const currentValue = select.value;
+                const isFilter = select.id === 'filterEmp';
+                select.innerHTML = '<option value="">' + (isFilter ? '全部' : '请选择人员') + '</option>' +
+                    employees.map(e => `<option value="${e.code}">${e.name} (${e.code})</option>`).join('');
+                select.value = currentValue;
+            });
+        }
+
+        // 创建人员
+        async function createEmployee() {
+            const code = document.getElementById('empCode').value;
+            const name = document.getElementById('empName').value;
+            const departmentCode = document.getElementById('empDept').value;
+
+            if (!code || !name || !departmentCode) {
+                alert('请填写所有字段');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/employees`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({ code, name, department_code: departmentCode })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('人员创建成功');
+                    document.getElementById('empCode').value = '';
+                    document.getElementById('empName').value = '';
+                    loadEmployees();
+                } else {
+                    alert(result.message || '创建失败');
+                }
+            } catch (error) {
+                alert('创建失败');
+            }
+        }
+
+        // 删除人员
+        async function deleteEmployee(code) {
+            if (!confirm('确定要删除此人员吗？')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/employees/${code}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+                loadEmployees();
+            } catch (error) {
+                alert('删除失败');
+            }
+        }
+
+        // ========== 账户设置 ==========
+
+        // 修改密码
+        async function changePassword() {
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('两次输入的密码不一致');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/change-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({ old_password: oldPassword, new_password: newPassword })
+                });
+
+                if (response.ok) {
+                    alert('密码修改成功');
+                    document.getElementById('oldPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    const data = await response.json();
+                    alert(data.detail || '密码修改失败');
+                }
+            } catch (error) {
+                alert('网络错误');
+            }
+        }
+
+        // 退出登录
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            }
+        }
+
+        // ========== WebSocket ==========
+
         function initWebSocket() {
             ws = new WebSocket(WS_URL);
 
@@ -338,7 +1935,11 @@
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 if (data.type === 'update') {
-                    updateUI(data.data);
+                    // 刷新数据
+                    loadInvoices();
+                    if (currentScanReport) {
+                        loadScanReportData();
+                    }
                 }
             };
 
@@ -364,7 +1965,8 @@
             }
         }
 
-        // 日期格式化
+        // ========== 工具函数 ==========
+
         function formatDate(dateStr) {
             if (!dateStr || dateStr.length !== 8) return dateStr || '-';
             return `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}-${dateStr.substring(6,8)}`;
@@ -379,6 +1981,14 @@
                 hour: '2-digit',
                 minute: '2-digit'
             });
+        }
+
+        function showMessage(text, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.textContent = text;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
         }
     </script>
 </body>

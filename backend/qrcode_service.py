@@ -32,11 +32,21 @@ class QRCodeService:
             print(f"二维码解析失败: {e}")
             return None
 
+    def decode_qrcode_text(self, qr_text: str) -> Optional[Dict]:
+        """直接解析二维码文本数据"""
+        try:
+            if not qr_text:
+                return None
+            return self._parse_qrcode_data(qr_text)
+        except Exception as e:
+            print(f"二维码文本解析失败: {e}")
+            return None
+
     def _parse_invoice_qrcode(self, data: str) -> Optional[Dict]:
         """解析增值税电子发票二维码标准格式
 
-        标准格式: 01,发票代码,发票号码,开票日期,校验码,金额
-        示例: 01,1234567890,25312000000432294815,20251226,,128.50
+        实际格式: 01,发票代码,空,发票号码,价税合计,开票日期,校验码前6位,校验码后4位
+        示例: 01,31,,25312000000432294815,363.75,20251226,,577F
         """
         # 清理数据，去除可能的空白字符
         data = data.strip()
@@ -48,7 +58,7 @@ class QRCodeService:
         # 分割数据（支持中英文逗号）
         parts = re.split(r'[,，]', data)
 
-        if len(parts) < 5:
+        if len(parts) < 6:
             return None
 
         result = {
@@ -58,17 +68,16 @@ class QRCodeService:
             "total_amount": None,
         }
 
-        # 第三位：发票号码（20位数字）
-        # 发票代码通常是12位或更少，发票号码是20位
-        if len(parts) > 2:
-            invoice_number = parts[2].strip()
+        # 第四位（索引3）：发票号码（20位数字）
+        if len(parts) > 3:
+            invoice_number = parts[3].strip()
             # 发票号码是20位数字
             if invoice_number.isdigit() and len(invoice_number) == 20:
                 result["invoice_number"] = invoice_number
 
-        # 第四位：开票日期 (YYYYMMDD)
-        if len(parts) > 3:
-            invoice_date = parts[3].strip()
+        # 第六位（索引5）：开票日期 (YYYYMMDD)
+        if len(parts) > 5:
+            invoice_date = parts[5].strip()
             # 验证是否为8位数字
             if invoice_date.isdigit() and len(invoice_date) == 8:
                 # 验证日期合理性
@@ -76,9 +85,9 @@ class QRCodeService:
                 if year.startswith(('20', '19')):
                     result["invoice_date"] = invoice_date
 
-        # 第六位：价税合计金额（可能存在）
-        if len(parts) >= 6 and parts[5].strip():
-            amount_str = parts[5].strip()
+        # 第五位（索引4）：价税合计金额
+        if len(parts) > 4 and parts[4].strip():
+            amount_str = parts[4].strip()
             try:
                 # 去除可能的货币符号和空格
                 amount_str = amount_str.replace('¥', '').replace('￥', '').replace(',', '').strip()
