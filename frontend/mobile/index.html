@@ -833,6 +833,8 @@
                 });
 
                 if (response.status === 401) {
+                    // Token 无效，清除并跳转到登录页
+                    localStorage.removeItem('token');
                     window.location.href = '/login';
                     return;
                 }

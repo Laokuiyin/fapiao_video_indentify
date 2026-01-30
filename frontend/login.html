@@ -149,10 +149,26 @@
         const loginBtn = document.getElementById('loginBtn');
         const errorMessage = document.getElementById('errorMessage');
 
-        // 检查是否已登录
+        // 检查是否已登录 - 验证 token 有效性
         const token = localStorage.getItem('token');
         if (token) {
-            window.location.href = '/';
+            // 验证 token 是否有效
+            fetch('/api/invoices', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Token 有效，跳转到首页
+                    window.location.href = '/';
+                } else {
+                    // Token 无效或过期，清除并显示登录页
+                    localStorage.removeItem('token');
+                }
+            })
+            .catch(() => {
+                // 请求失败，清除 token 并显示登录页
+                localStorage.removeItem('token');
+            });
         }
 
         loginForm.addEventListener('submit', async (e) => {

@@ -483,6 +483,9 @@ class Database:
             WHERE id = ?
         """, (row[0], row[1], datetime.now().isoformat(), report_id))
 
+        # 显式提交事务，确保统计数据更新被持久化
+        await db.commit()
+
 
 # 全局数据库实例
 db = Database()
